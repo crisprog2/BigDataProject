@@ -10,18 +10,26 @@ namespace BigDataProject
     {
         static void Main(string[] args)
         {
-            /*int numpronombres = 0;
-            string prueba = "adonde";
-            string[] texto = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\pronombres.txt", Encoding.UTF8);
-            foreach(string line in texto)
+            int numpronombres = 0;
+            Char delimitador = ' ';
+            string[] capitulo = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\LIBRO DON QUIJOTE\capitulo 1.txt", Encoding.UTF8);
+            string[] pronombres = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\pronombres.txt", Encoding.UTF8);
+            foreach (string line in capitulo)
             {
-                if (line.Equals(prueba))
+                string[] palabras = line.Split(delimitador);
+                foreach(var palabra in palabras)
                 {
-                    numpronombres++;
+                    foreach(string pronombre in pronombres)
+                    {
+                        if (palabra.Equals(pronombre))
+                        {
+                            numpronombres++;
+                        }
+                    }
                 }
             }
             Console.WriteLine(numpronombres);
-            Console.ReadLine();*/
+            Console.ReadLine();
             /*string valor = "hola mundo gonorrea";
             Char delimitador = ' ';
             string[] palabra = valor.Split(delimitador);
@@ -29,7 +37,6 @@ namespace BigDataProject
             {
                 Console.WriteLine(palabras);
             }*/
-            Console.ReadLine();
         }
     }
 }
