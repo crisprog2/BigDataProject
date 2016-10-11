@@ -49,6 +49,14 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Files\adjetivos.txt" />
+    <Content Include="Files\personajes.txt" />
+    <Content Include="Files\pronombres.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Files\LIBRO DON QUIJOTE\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
