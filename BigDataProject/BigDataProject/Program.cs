@@ -9,12 +9,13 @@ namespace BigDataProject
 {
     class Program
     {
-
+        public static List<int> numeropronombres = new List<int>();
+        public static List<int> numeroadjetivos = new List<int>();
         public static void datos(int numcap)
         {
-            Console.WriteLine("**************************************");
+            /*Console.WriteLine("**************************************");
             Console.WriteLine("Capitulo " + numcap);
-            Console.WriteLine("**************************************");
+            Console.WriteLine("**************************************");*/
             string cadena;
             int numpronombres = 0, numadjetivos = 0;
             Char delimitador = ' ';
@@ -44,11 +45,13 @@ namespace BigDataProject
                     }
                 }
             }
-            Console.WriteLine("Numero de pronombres en capitulo: " + numpronombres);
+            numeroadjetivos.Add(numadjetivos);
+            numeropronombres.Add(numpronombres);
+            /*Console.WriteLine("Numero de pronombres en capitulo: " + numpronombres);
             Console.WriteLine("Numero de adjetivos en capitulo: " + numadjetivos);
             Console.WriteLine("**************************************");
             Console.WriteLine();
-            Console.WriteLine();
+            Console.WriteLine();*/
         }
 
         static void Main(string[] args)
@@ -57,6 +60,12 @@ namespace BigDataProject
             {
                 datos(i);
             }
+
+            foreach(int numadjetivos in numeroadjetivos)
+            {
+                Console.WriteLine("Adjetivos en lista " + numadjetivos);
+            }
+
             Console.ReadLine();
         }
     }
