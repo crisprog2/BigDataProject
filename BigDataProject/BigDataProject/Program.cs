@@ -56,14 +56,19 @@ namespace BigDataProject
 
         static void Main(string[] args)
         {
+            int numcapitulo;
+            List<Capitulo> pronombreCapitulo = new List<Capitulo>();
+            Capitulo pronombre;
             for(int i = 1; i <= 52; i++)
             {
                 datos(i);
             }
 
-            foreach(int numadjetivos in numeroadjetivos)
+            for(int i = 0; i < 52; i++)
             {
-                Console.WriteLine("Adjetivos en lista " + numadjetivos);
+                numcapitulo = i + 1;
+                pronombre = new Capitulo { capitulo = "Capitulo "+ numcapitulo, numeropronombres = numeropronombres[i] };
+                pronombreCapitulo.Add(pronombre);
             }
 
             Console.ReadLine();
