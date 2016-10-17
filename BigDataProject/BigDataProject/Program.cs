@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ namespace BigDataProject
             string cadena;
             int numpronombres = 0, numadjetivos = 0;
             Char delimitador = ' ';
-            string[] capitulo = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\LIBRO DON QUIJOTE\capitulo "+numcap+".txt", Encoding.UTF8);
+            string[] capitulo = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\DON QUIJOTE\CAPITULO " + numcap+".txt", Encoding.UTF8);
             string[] pronombres = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\pronombres.txt", Encoding.UTF8);
             string[] adjetivos = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\adjetivos.txt", Encoding.UTF8);
             foreach (string line in capitulo)
@@ -56,21 +57,47 @@ namespace BigDataProject
 
         static void Main(string[] args)
         {
-            int numcapitulo;
+            int numcapitulo, totalpronombre=0, totaladjetivo=0;
             List<Capitulo> pronombreCapitulo = new List<Capitulo>();
-            Capitulo pronombre;
-            for(int i = 1; i <= 52; i++)
+            List<Capitulo> adjetivoCapitulo = new List<Capitulo>();
+            Capitulo pronombre, adjetivos;
+            for(int i = 1; i <= 35; i++)
             {
                 datos(i);
             }
 
-            for(int i = 0; i < 52; i++)
+            for(int i = 0; i < 35; i++)
             {
                 numcapitulo = i + 1;
-                pronombre = new Capitulo { capitulo = "Capitulo "+ numcapitulo, numeropronombres = numeropronombres[i] };
+                pronombre = new Capitulo { capitulo = "Capitulo "+ numcapitulo, numerodatos = numeropronombres[i] };
+                adjetivos = new Capitulo { capitulo = "Capitulo " + numcapitulo, numerodatos = numeroadjetivos[i] };
                 pronombreCapitulo.Add(pronombre);
+                adjetivoCapitulo.Add(adjetivos);
+
             }
 
+            foreach(int suma in numeropronombres)
+            {
+                totalpronombre = totalpronombre + suma;
+            }
+            foreach(int suma in numeroadjetivos)
+            {
+                totaladjetivo = totaladjetivo + suma;
+            }
+            var jsonpronombres = new Pronombres
+            {
+                totalpronombres = totalpronombre,
+                Pronombre = pronombreCapitulo
+            };
+            var jsonadjetivos = new Adjetivos
+            {
+                totaladjetivos = totaladjetivo,
+                adjetivos=adjetivoCapitulo
+            };
+            string json= JsonConvert.SerializeObject(jsonpronombres);
+            string json2 = JsonConvert.SerializeObject(jsonadjetivos);
+            System.IO.File.WriteAllText(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\jsonpronombres.json", json);
+            System.IO.File.WriteAllText(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\jsonadjetivos.json", json2);
             Console.ReadLine();
         }
     }

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adjetivos.cs" />
     <Compile Include="Capitulo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Pronombres.cs" />

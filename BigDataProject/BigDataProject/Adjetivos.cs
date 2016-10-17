@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BigDataProject
 {
-    class Capitulo
+    class Adjetivos
     {
-        public string capitulo { get; set; }
-        public int numerodatos { get; set; }
+        public int totaladjetivos { get; set; }
+        public List<Capitulo> adjetivos { get; set; }
     }
 }
