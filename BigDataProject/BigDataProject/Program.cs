@@ -10,13 +10,16 @@ namespace BigDataProject
 {
     class Program
     {
-
+        /*
+         * En esta seccion se crea todas la variables globales que se van a utilizar a travéz del programa.
+         * Se crean varias listas las cuales guardarán los datos de manera dinámica.
+         * Adicionalmente se crean varios arreglos los cuales nos serviran para realizar la suma de los datos ordenados alfabéticamente
+         * Se crea una variable global la cual nos sacará la suma de todas las palabras en el libro
+         */
         public static Letra letraABC;
         public static List<Letra> listaLetra;
         public static GlosarioCapitulo glosarioCap;
         public static List<GlosarioCapitulo> listaGlosarioCap = new List<GlosarioCapitulo>();
-
-
         public static List<int> numeropronombres = new List<int>();
         public static List<int> numeroadjetivos = new List<int>();
         public static List<int> numeroarticulos = new List<int>();
@@ -27,6 +30,11 @@ namespace BigDataProject
         public static int[] adjetivosxalfabeto = new int[27];
         public static char[] abecedario = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
         public static int numeropalabras = 0;
+        
+
+        /*
+         * Con esta función inicializaremos los arreglos que nos sumarán la cantidad de datos que hay en el libro ordenados alfabéticamente
+         */
         public static void iniciarVectores()
         {
             for (int i = 0; i < 27; i++)
@@ -37,23 +45,57 @@ namespace BigDataProject
                 adjetivosxalfabeto[i] = 0;
             }
         }
+
+
+
+        /*
+         * Con esta función realizaremos la extracción de datos e iremos construyendo el glosario solicitado.
+         * Recibe como parámetro el número del capítulo a revisar.
+         */
         public static void datos(int numcap)
         {
+            //inicializaremos la lista en la cual guardaremos de manera alfabética la cantidad de pronombres, preposiciones, adjetivos y artículos
             listaLetra = new List<Letra>();
+            //Por cada capítulo revisado reinicia los contadores de los Arreglos para así sacar un dato real
             iniciarVectores();
+            //Variable para realizar la limpieza del texto en el libro
             string cadena;
+            //Variables para realizar la sumatoria de cada uno de los datos a extraer por capítulo
             int numpronombres = 0, numadjetivos = 0, numarticulos=0, numpreposiciones=0;
+            //Variable para decirle al programa que vamos a realizar una separación de palabras por espacio de cada línea de los capítulos
             Char delimitador = ' ';
+            //Variable que guarda en un array todas las lineas del capítulo cargado al programa en UTF8
             string[] capitulo = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\DON QUIJOTE\CAPITULO " + numcap+".txt", Encoding.UTF8);
+            //Variable que guarda en un array todas las lineas del archivo de pronombres cargado al programa en UTF8
             string[] pronombres = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\pronombres.txt", Encoding.UTF8);
+            //Variable que guarda en un array todas las lineas del archivo de adjetivos cargado al programa en UTF8
             string[] adjetivos = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\adjetivos.txt", Encoding.UTF8);
+            //Variable que guarda en un array todas las lineas del archivo de preposiciones cargado al programa en UTF8
             string[] preposiciones=System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\preposiciones.txt", Encoding.UTF8);
+            //Variable que guarda en un array todas las lineas del capítulo del archivo de artículos al programa en UTF8
             string[] articulos = System.IO.File.ReadAllLines(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\BIG DATA\articulos.txt", Encoding.UTF8);
+            //En este for lee cada linea del capítulo
             foreach (string line in capitulo)
             {
+                /*
+                 * En esta sección se aplican las expresiones regulares para limpiar el contenido de cada linea eliminando algunos caracteres especiales
+                 * y convirtiendo cada mayúscula en minúscula
+                 */
                 cadena = Regex.Replace(line, @"[,-.:()«»¿?;!¡]", "");
                 cadena = cadena.ToLower();
+
+
+                //En este array se guardan las palabras separadas de cada linea del capítulo
                 string[] palabras = cadena.Split(delimitador);
+
+
+
+                /*
+                 * En esta sección se realiza una evaluación de cada palabra para saber cuál es un pronombre, preposición, adjetivo y artículo.
+                 * Teniendo esta información realiza un conteo para saber la cantidad de cada datos en cada linea (pronombre, preposición, adjetivo y artículo).
+                 * Adicionalmente verifica la primera letra de cada palabra y realiza una suma para sacar la cantidad de pronombres, preposiciones, adjetivos y artículos de una 
+                 * manera discriminada y ordenada alfabéticamente utilizando el array del abecedario.
+                 */
                 foreach (var palabra in palabras)
                 {
                     numeropalabras++;
@@ -423,15 +465,29 @@ namespace BigDataProject
                     }
                 }
             }
+
+
+
+            /*
+             * En esta sección guardamos en cada lista el numero de adjetivos, articulos, preposiciones, pronombres totales del capítulo
+             */
             numeroadjetivos.Add(numadjetivos);
             numeropronombres.Add(numpronombres);
             numeroarticulos.Add(numarticulos);
             numeropreposiciones.Add(numpreposiciones);
+
+
+
+            /*
+             * En esta sección empezamos a crear el JSON del glosario de acuerdo a la información extraida por cada Capítulo
+             */
             for(int i=0; i < 27; i++)
             {
+                //Por cada letra del abecedario creamos un nuevo Objeto para almacenar los datos encontrados de cada palabra cuya letra inical corresponda a una del abecedario (Corresponde al tercer nivel del JSON)
                 letraABC = new Letra { letra=abecedario[i], preposiciones=preposicionexsalfabeto[i], adjetivos=adjetivosxalfabeto[i], articulos=articulosxalfabeto[i], pronombres=pronombresxalfabeto[i] };
                 listaLetra.Add(letraABC);
             }
+            //Adicionamos la lista de las palabras ordenadas por su letra inicial alfabéticamente y la información total de cada capitulo (Corresponde al segundo nivel del JSON)
             listaGlosarioCap.Add(glosarioCap = new GlosarioCapitulo
             {
                 capitulo = "Capitulo " + numcap,
@@ -446,20 +502,37 @@ namespace BigDataProject
         }
         static void Main(string[] args)
         {
+            //Variables para el control del número del capítulo, y la suma total de todo el libreo de los pronombres, adjetivos, articulos, preposiciones
             int numcapitulo, totalpronombre=0, totaladjetivo=0, totalarticulo=0, totalpreposicion=0;
+
+
+            /*
+             * Sección en la cual definimos las listas dinámicas para crear el segundo nivel de cada JSON discriminado por pronombres, adjetivos, artículos y preposiciones.
+             * Adicional mente se crean las variables de la clase Capítulo para la creación del JSON discriminado.
+             */
             List<Capitulo> pronombreCapitulo = new List<Capitulo>();
             List<Capitulo> adjetivoCapitulo = new List<Capitulo>();
             List<Capitulo> articuloCapitulo = new List<Capitulo>();
             List<Capitulo> preposicionCapitulo = new List<Capitulo>();
             List<Letra> letraAbecedario = new List<Letra>();
             Capitulo pronombre, adjetivos, articulo, preposicion;
+
+
+            //En este for mandamos el número del capítulo a evaluar como parámetro a la funcion datos.
             for(int i = 1; i <= 35; i++)
             {
                 datos(i);
             }
+
+
+            //En este for empezamos a crear el segundo nivel de los JSON discriminados.
             for(int i = 0; i < 35; i++)
             {
                 numcapitulo = i + 1;
+                /*
+                 * Se crean nuevos objetos por cada capítulo evaluado durante el proceso de extracción de datos.
+                 * Se crea el segundo nivel del JSON discriminado por pronombres, adjetivos, artículos y preposiciones
+                 */
                 pronombre = new Capitulo { capitulo = "Capitulo "+ numcapitulo, numerodatos = numeropronombres[i] };
                 adjetivos = new Capitulo { capitulo = "Capitulo " + numcapitulo, numerodatos = numeroadjetivos[i] };
                 articulo = new Capitulo { capitulo = "Capitulo " + numcapitulo, numerodatos = numeroarticulos[i] };
@@ -471,6 +544,12 @@ namespace BigDataProject
 
             }
 
+
+
+
+            /*
+             * En esta sección realizamos la suma total de los pronombres, adjetivos, artículos y preposiciones que se encuentran en el libro
+             */
             foreach(int suma in numeropronombres)
             {
                 totalpronombre = totalpronombre + suma;
@@ -487,6 +566,11 @@ namespace BigDataProject
             {
                 totalpreposicion = totalpreposicion + suma;
             }
+
+
+            /*
+             * En esta sección se crea el primer nivel de cada uno de los JSON discriminados por pronombres, adjetivos, artículos y preposiciones y del GLOSARIO en general.
+             */
             var jsonpronombres = new Pronombres
             {
                 totalpronombres = totalpronombre,
@@ -513,11 +597,22 @@ namespace BigDataProject
                 numeroPalabras = numeropalabras,
                 Capitulo = listaGlosarioCap
             };
-            string json= JsonConvert.SerializeObject(jsonpronombres);
+
+
+            /*
+             * En esta sección se realiza la conversión a JSON de cada uno de los objetos creados para la generación de los JSON.
+             * Se utiliza una librería llamada Newtonsoft la cual es propia de c# para la generación de los json
+             */
+            string json = JsonConvert.SerializeObject(jsonpronombres);
             string json2 = JsonConvert.SerializeObject(jsonadjetivos);
             string json3 = JsonConvert.SerializeObject(jsonarticulos);
             string json4 = JsonConvert.SerializeObject(jsonpreposiciones);
             string json5 = JsonConvert.SerializeObject(jsonglosario);
+
+
+            /*
+             * Finalmente se guardan los JSON en la ruta especificada para su importación en MONGODB y para su análisis.
+             */
             System.IO.File.WriteAllText(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\jsonpronombres.json", json);
             System.IO.File.WriteAllText(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\jsonadjetivos.json", json2);
             System.IO.File.WriteAllText(@"D:\IMPORTANTE_NO_BORRAR\DOCUMENTOS\jsonarticulos.json", json3);
