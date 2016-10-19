@@ -50,6 +50,9 @@
     <Compile Include="Adjetivos.cs" />
     <Compile Include="Articulos.cs" />
     <Compile Include="Capitulo.cs" />
+    <Compile Include="Glosario.cs" />
+    <Compile Include="GlosarioCapitulo.cs" />
+    <Compile Include="Letra.cs" />
     <Compile Include="Preposiciones.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Pronombres.cs" />

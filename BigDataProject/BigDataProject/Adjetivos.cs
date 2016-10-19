@@ -9,6 +9,6 @@ namespace BigDataProject
     class Adjetivos
     {
         public int totaladjetivos { get; set; }
-        public List<Capitulo> adjetivos { get; set; }
+        public List<Capitulo> Adjetivo { get; set; }
     }
 }
